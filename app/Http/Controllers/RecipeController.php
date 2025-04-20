@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Storage;
 
 class RecipeController extends Controller
 {
+
     public function index()
     {
-        $recipes = Recipe::with('category')->where('user_id', Auth::id())->latest()->paginate(10);
+        $recipes = Recipe::with('category', 'user')->latest()->paginate(10);
+
         return view('recipes.index', compact('recipes'));
     }
-
     public function create()
     {
         $categories = Category::all();
@@ -47,8 +48,10 @@ class RecipeController extends Controller
 
     public function show(Recipe $recipe)
     {
-        $this->authorizeAccess($recipe);
+        // $this->authorizeAccess($recipe);
         return view('recipes.show', compact('recipe'));
+
+
     }
 
     public function edit(Recipe $recipe)
@@ -102,4 +105,29 @@ class RecipeController extends Controller
             abort(403);
         }
     }
+
+    public function top()
+    {
+        $recipes = Recipe::with('category')->mostFavorited(12)->get();
+        return view('recipes.top', compact('recipes'));
+    }
+
+
+
+
+    public function addComment(Request $request, Recipe $recipe)
+    {
+        $request->validate([
+            'body' => 'required|string|max:1000',
+        ]);
+
+        $recipe->comments()->create([
+            'body' => $request->body,
+            'user_id' => auth()->id(),
+        ]);
+
+        return back()->with('success', 'Comentário adicionado!');
+    }
+
+
 }

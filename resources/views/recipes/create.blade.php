@@ -6,7 +6,8 @@
 
     <form action="{{ route('recipes.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
-        @include('recipes._form', ['button' => 'Criar Receita'])
+        @include('recipes._form', ['button' => 'Criar Receita',
+         ])
     </form>
 </div>
 @endsection

@@ -20,4 +20,21 @@ public function category() {
 public function comments() {
     return $this->hasMany(Comment::class);
 }
+
+
+public function favoritedBy()
+{
+    return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+}
+
+// escopo de contagem
+public function scopeMostFavorited($query, $limit = 10)
+{
+    return $query->withCount('favoritedBy')
+                 ->whereHas('favoritedBy')
+                 ->orderByDesc('favorited_by_count')
+                 ->take($limit);
+}
+
+
 }

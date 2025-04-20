@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    public function recipes() {
+
+    protected $fillable = ['name', 'image'];
+
+public function recipes()
+{
     return $this->hasMany(Recipe::class);
 }
+    
 }
