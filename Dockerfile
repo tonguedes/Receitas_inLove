@@ -20,7 +20,10 @@ WORKDIR /var/www
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN php artisan package:discover
+
+# RUN composer install --no-dev --optimize-autoloader
 
 RUN php artisan config:cache \
     && php artisan route:cache \
