@@ -1,34 +1,21 @@
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    curl \
-    git \
-    libpq-dev \
-    libzip-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl
+# ... suas dependências (git, unzip, etc)
 
+# Instale o Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Crie usuário normal para evitar problema com root
+RUN useradd -ms /bin/bash appuser
+USER appuser
+
+# Copie os arquivos da aplicação
+COPY . /var/www
 WORKDIR /var/www
 
-COPY . .
-
+# Instale dependências sem scripts automáticos
 RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Volte a rodar scripts manualmente
 RUN php artisan package:discover
 
-# RUN composer install --no-dev --optimize-autoloader
-
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
-
-EXPOSE 10000
-
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
