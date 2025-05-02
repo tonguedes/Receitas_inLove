@@ -13,9 +13,35 @@ class RecipeController extends Controller
 
     public function index()
     {
-        $recipes = Recipe::with('category', 'user')->latest()->paginate(10);
+        // $recipes = Recipe::with('category', 'user')->latest()->paginate(10);
+        $recipes = Recipe::with('category', 'user')
+            ->where('status', 'aprovada')
+            ->latest()
+            ->paginate(10);
 
-        return view('recipes.index', compact('recipes'));
+        $categories = Category::all(); // busca todas as categorias
+
+
+        return view('recipes.index', compact('recipes', 'categories'));
+
+
+    }
+
+
+
+    public function aprovar($id)
+    {
+        $receita = Recipe::findOrFail($id);
+        $receita->update(['status' => 'aprovada']);
+        return redirect()->route('recipes.index')->with('success', 'Receita pendende de aprovação pelo adm!');
+
+    }
+
+    public function rejeitar($id)
+    {
+        $receita = Recipe::findOrFail($id);
+        $receita->update(['status' => 'rejeitada']);
+        return back()->with('error', 'Receita rejeitada.');
     }
     public function create()
     {

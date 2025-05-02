@@ -106,9 +106,6 @@
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-gray-800 mb-8">Categorias de Receitas</h2>
 
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Categorias de Receitas</h2>
-
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                 @foreach ($categorias as $categoria)
                     <a href="{{ route('categorias.show', $categoria->id) }}"

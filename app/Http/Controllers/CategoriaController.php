@@ -10,8 +10,10 @@ class CategoriaController extends Controller
     public function show($id)
 {
     $categoria = Category::findOrFail($id);
-    $receitas = $categoria->recipes; // se tiver relação
+    $receitas = $categoria->recipes()->where('status', 'aprovada')->get();
 
-    return view('categorias.show', compact('categoria', 'receitas'));
+
+
+    return view('categorias.show', compact('categoria','receitas'));
 }
 }

@@ -6,9 +6,16 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CommentLikeController;
 use App\Models\Recipe;
+use Database\Seeders\RecipeSeeder;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\GoogleController;
+
+
+use Illuminate\Support\Facades\Mail;
+
+
+
 
 
 
@@ -23,14 +30,21 @@ Route::get('recipes/{recipe}', [RecipeController::class, 'show'])
     ->name('recipes.show')
     ->where('recipe', '[0-9]+');
 
-    Route::get('recipes', [RecipeController::class, 'index'])
+Route::get('recipes', [RecipeController::class, 'index'])
     ->name('recipes.index');
+
+// Dashboard só para admin
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/{id}aprovar', [DashboardController::class, 'aprovar'])->name('recipes.aprovar');
+    Route::post('/dashboard/{id}rejeitar', [DashboardController::class, 'rejeitar'])->name('recipes.rejeitar');
+});
 
 
 Route::middleware('auth')->group(function () {
     // Aplica o middleware para todas as rotas, exceto 'show'
-    Route::resource('recipes', RecipeController::class)->except(['show','index'])->middleware('auth');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('recipes', RecipeController::class)->except(['show', 'index'])->middleware('auth');
+    //Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -48,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::get('categories/{category}', [CategoryController::class, 'show']);
+Route::ressource('categories/{category}', [CategoriaController::class, 'show']);
 
 
 // Route::get('search', [RecipeController::class, 'search']);
@@ -82,10 +96,10 @@ Route::get('/', function (Request $request) {
 
 // rota sugestão ajax
 
-Route::get('/busca-sugestoes', function (\Illuminate\Http\Request $request) {
+Route::get('/busca-sugestoes', function (Request $request) {
     $search = $request->get('q');
 
-    $results = \App\Models\Recipe::where('title', 'like', '%' . $search . '%')
+    $results = Recipe::where('title', 'like', '%' . $search . '%')
         ->select('id', 'title')
         ->take(5)
         ->get();
@@ -95,7 +109,7 @@ Route::get('/busca-sugestoes', function (\Illuminate\Http\Request $request) {
 
 
 
-Route::get('/top-receitas', [\App\Http\Controllers\RecipeController::class, 'top'])->name('recipes.top');
+Route::get('/top-receitas', [RecipeController::class, 'top'])->name('recipes.top');
 
 
 Route::get('/categorias/{id}', [CategoriaController::class, 'show'])->name('categorias.show');

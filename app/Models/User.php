@@ -12,6 +12,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -57,11 +59,13 @@ class User extends Authenticatable
           return $this->hasMany(Comment::class);
          }
 
-         
+
          public function likedComments()
         {
           return $this->belongsToMany(Comment::class, 'comment_likes');
         }
+
+
 
 
 }
