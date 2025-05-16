@@ -28,6 +28,6 @@ class GoogleController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard'); // ou home, ou onde quiser
+        return redirect()->route('recipes.index'); // ou home, ou onde quiser
     }
 }
