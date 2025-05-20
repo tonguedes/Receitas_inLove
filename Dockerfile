@@ -18,12 +18,17 @@ COPY . .
 # Copiar e preparar .env
 COPY .env.example .env
 
+
+RUN php artisan key:generate
+
 # Corrigir permissões
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 775 storage bootstrap/cache
 
 # Permitir Composer rodar como root
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
+
 
 # Instalar dependências Laravel
 RUN composer install --no-dev --optimize-autoloader && \
