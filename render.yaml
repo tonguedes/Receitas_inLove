@@ -1,5 +1,5 @@
 services:
-  - name: laravel-app
+  - name: laravel-db
     type: web
     plan: free
     env: docker
@@ -10,7 +10,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: dpg-d0j8vq6mcj7s73foems0-a
       - key: APP_KEY
         generateValue: true
       - key: DB_CONNECTION
