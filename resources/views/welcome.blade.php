@@ -106,30 +106,31 @@
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-gray-800 mb-8">Categorias de Receitas</h2>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-                @foreach ($categorias as $categoria)
-                    <a href="{{ route('categorias.show', $categoria->id) }}"
-                       class="group relative rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-28 flex items-center justify-center">
+           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+    @foreach ($categorias as $categoria)
+        <a href="{{ route('categorias.show', $categoria->id) }}"
+           class="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 h-32 flex items-center justify-center">
 
-                        {{-- Imagem de fundo --}}
-                        @if ($categoria->image)
-                            <img src="{{ asset('storage/' . $categoria->image) }}"
-                                 alt="{{ $categoria->name }}"
-                                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105 brightness-75">
-                        @else
-                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-100 to-indigo-200"></div>
-                        @endif
+            {{-- Imagem de fundo --}}
+            @if ($categoria->image)
+                <img src="{{ asset('storage/' . $categoria->image) }}"
+                     alt="{{ $categoria->name }}"
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-110 brightness-80 saturate-150">
+            @else
+                <div class="absolute inset-0 bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200"></div>
+            @endif
 
-                        {{-- Overlay escuro com hover suave --}}
-                        <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+            {{-- Overlay com blur + cor + transição --}}
+            <div class="absolute inset-0 backdrop-blur-sm bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
 
-                        {{-- Nome da categoria --}}
-                        <div class="relative z-10 text-white group-hover:text-gray-900 text-base font-semibold text-center px-2 transition-colors duration-300">
-                            {{ $categoria->name }}
-                        </div>
-                    </a>
-                @endforeach
+            {{-- Nome da categoria --}}
+            <div class="relative z-10 text-white text-lg font-bold text-center px-3 py-1 rounded-md bg-black/40 group-hover:bg-white/70 group-hover:text-black transition-all duration-300 backdrop-blur">
+                {{ $categoria->name }}
             </div>
+        </a>
+    @endforeach
+</div>
+
         </div>
 
     </div>

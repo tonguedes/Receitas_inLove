@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::ressource('categories/{category}', [CategoriaController::class, 'show']);
+Route::get('categories/{category}', [CategoriaController::class, 'show']);
 
 
 // Route::get('search', [RecipeController::class, 'search']);
