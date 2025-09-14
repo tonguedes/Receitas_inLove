@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
 Route::get('categories/{category}', [CategoriaController::class, 'show']);
 
 
